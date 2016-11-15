@@ -1,0 +1,68 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.carousel-panel {
+    position: relative;
+}
+
+ul {
+    display:inline-block;
+    margin:0;
+    padding:0;
+    list-style:none;
+    list-style-type: none;
+}
+
+li {
+    display: inline-block;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+.opt-container {
+    position: absolute;
+    bottom:0;
+    width: 100%;
+    height: 40px;
+    margin: 0 auto;
+    text-align: center;
+
+}
+
+#opt-panel {
+    line-height: 40px;
+}
+
+.opt-btn {
+    line-height: 40px;
+    margin: 0 5px;
+}
+
+.opt-circle {
+    display: inline-block;
+    width: 20px;
+    height:20px;
+    border-radius: 50%;
+    background-color: #2e1b48;
+    transition: all .3s ease-in-out;
+}
+
+.opt-circle:hover, .opt-btn.active .opt-circle {
+    background-color:#014758;
+    box-shadow: 0 0 5px #014758;
+    transform: scale(1.15);
+
+}
