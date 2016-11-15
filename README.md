@@ -1,5 +1,12 @@
 ###自定义实现图片轮播效果
-    使用方式调用方式： carousel.init([{src: imagepath, timeout:3000},{}...], opts).show();
+    使用方式调用方式： 
+    1.引入jquery.js
+    <script type="text/javascript" src="script/lib/jquery-1.8.0.min.js"></script>
+    2.引入carousel.js
+    <script type="text/javascript" src='script/carousel.js'></script>
+    3.调用carousel对象，初始化
+    carousel.init([{src: imagepath, timeout:3000},{}...], opts).show();
+    4.该实例切换时默认为
     实例:
 
 ```
@@ -23,3 +30,4 @@ carousel.init(items).show();
         opts: 参数信息，可以配置的参数信息有：
             switchTimeout: 图片切换的时长，单位毫秒
             optEnable: 是否显示控制点，用于手动控制显示的图片
+            useJquery: 是否使用jquery平滑切换动画

@@ -7,6 +7,7 @@
 * timeout: 当前图片显示的时间，毫秒值
 * opts: 参数信息，可以配置的参数信息有：
 * switchTimeout: 图片切换的时长，单位毫秒
+* useJquery: 是否使用jquery平滑切换动画
 * optEnable: 是否显示控制点，用于手动控制显示的图片
 */
 (function($) {
@@ -22,6 +23,7 @@
             curIndex: 0, //当前播放的图片索引
             switchTimeout: 500, //300毫秒的图片切换时间
             optEnable: true, //是否添加控制点
+            useJquery: true, //使用jquery进行动画渲染
             timer: null,
             size: {
                 width: 400,
@@ -78,10 +80,11 @@
             var element = this;
 
             this.settings.timer = setTimeout(function() {
-                //这里
-                // element.switchWithNoAnimate(li,element.callback);
-                element.switchFromRightToLeft(li, element.callback);
-                
+                if(element.settings.useJquery && (typeof $) != 'undefined') {
+                    element.switchFromRightToLeft(li, element.callback);
+                } else {
+                    element.switchWithNoAnimate(li,element.callback);    
+                }
             }, item.timeout);
         },
         callback: function() {
@@ -108,6 +111,7 @@
         * 没有动画效果，直接闪现图片
         */
         switchWithNoAnimate: function(li, callback) {
+            var element = this;
             var panel = document.getElementById('carousel-panel');
             panel.removeChild(li); //删除
             panel.appendChild(li); //添加到末尾
