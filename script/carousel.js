@@ -21,7 +21,8 @@
             panel: null, //image panel
             optPanel: null, // 拖动点panel
             curIndex: 0, //当前播放的图片索引
-            switchTimeout: 500, //300毫秒的图片切换时间
+            switchTimeout: 500, //500毫秒的图片切换时间
+            timeout: 3000, //默认图片播放3秒
             optEnable: true, //是否添加控制点
             useJquery: true, //使用jquery进行动画渲染
             timer: null,
@@ -47,6 +48,11 @@
                     && null != opts.optEnable) {
                     this.settings.optEnable = opts.optEnable;
                 }
+
+                if((typeof opts.useJquery) != 'undefined' 
+                    && null != opts.useJquery) {
+                    this.settings.useJquery = opts.useJquery;
+                }
             }
 
             this.settings.items = items;
@@ -58,18 +64,70 @@
             this.createImages();
             if(this.settings.optEnable) {
                 this.createOptPanel();
-                this.initOptBtnsEvent();    
+                this.initOptBtnsEvent();
             }
+            this.initPrevNextOptBtns();  
 
             this.animate();
+        },
+        /**
+        * 初始化左右两端控制点
+        */
+        initPrevNextOptBtns: function() {
+            var element = this;
+            var main = document.getElementsByClassName('main')[0];
+            var panel = document.getElementsByClassName('carousel-container')[0];
+            var panelWidth = parseFloat(panel.style.width);
+            var size = this.settings.size;
+            var horBtns = document.getElementsByClassName('hor-btn');
+
+            var width;
+            if(this.settings.optEnable) {
+                var prevNextPanelWidth = 60;
+                width = (panelWidth + prevNextPanelWidth*2);
+
+                var horBtn, cls;
+                for(var i = 0; i < horBtns.length; i++) {
+                    horBtn = horBtns[i];
+                    horBtn.style.lineHeight = size.height + 'px';
+                    cls = horBtn.className;
+                    element.bindEvent(horBtn, 'click', cls, function(cls) {
+                        var items = element.settings.items;
+                        var index = (element.settings.curIndex - 1 + items.length) % items.length; //还原为当前正在展示的图片的index
+                        if(cls.indexOf('next-btn') != -1) { //前一张图片
+                            index = (index + 1) % items.length;
+                        }else {
+                            index = (index - 1 + items.length) % items.length;
+                        }
+
+                        element.jumpToIndexImage(index);
+                    })();
+                }
+            }else {
+                width = panelWidth;
+                var i = 0;
+                while(horBtns.length > 0) {
+                    main.removeChild(horBtns[0]);
+                }
+                
+            }
+
+            main.style.width = width + 'px';
+            main.style.height = size.height + 'px';
+
         },
         /**
         * 开始实现图片的轮播动画效果
         */
         animate: function() {
+            var element = this;
             var items = this.settings.items;
             var index = (this.settings.curIndex++) % items.length;
             var item = items[index];
+            var timeout = item.timeout;
+            if((typeof timeout) == undefined || !isNumber(timeout)) {
+                timeout = element.settings.timeout;
+            }
             //这里为了循环取值，需要对索引值求余, 不然会数组越界
             this.settings.curIndex %= items.length;
             
@@ -90,7 +148,9 @@
         callback: function() {
             var element = this;
             var timer = element.settings.timer;
-            element.updateOptStyle();
+            if(element.settings.optEnable) {
+                element.updateOptStyle();
+            }
             element.animate(); //等待下一张图片进行渲染
             if(timer != null) {
                 clearTimeout(timer);
@@ -288,7 +348,15 @@
         },{
             src: 'images/image03.jpg',
             timeout: 5000 //播放5秒
+        },{
+            src: 'images/image04.jpg',
+            timeout: 5000 //播放5秒
         }];
+        var opts = {
+            useJquery: true, //平滑切换
+            optEnable: true, //使用控制点
+            // switchTimeout: 600 //切换图片时间隔
+        }
 
         carousel.init(items).show();
     }
