@@ -67,8 +67,34 @@
                 this.initOptBtnsEvent();
             }
             this.initPrevNextOptBtns();  
-
+            this.initPanelMouseEvent();
             this.animate();
+        },
+        initPanelMouseEvent: function() {
+        	this.initPanelMouseHoverEvent();
+        	this.initPanelMouseOutEvent();
+        },
+        initPanelMouseHoverEvent: function() {
+        	var element = this;
+        	var panel = document.getElementsByClassName('carousel-container')[0];
+        	element.bindEvent(panel, 'mouseover', null, function() {
+        		console.info('停止动画');
+        		var timer = element.settings.timer;
+        		if(timer != null) {
+        			clearTimeout(timer);
+        		}
+        	})();
+        },
+        initPanelMouseOutEvent: function() {
+			var element = this;
+			var items = element.settings.items;
+        	var panel = document.getElementsByClassName('carousel-container')[0];
+        	element.bindEvent(panel, 'mouseout', null, function() {
+        		console.info('开始动画');
+				var index = (element.settings.curIndex - 1 + items.length) % items.length;
+				element.settings.curIndex = index;
+				element.animate();
+        	})();
         },
         /**
         * 初始化左右两端控制点
