@@ -125,7 +125,7 @@
             var index = (this.settings.curIndex++) % items.length;
             var item = items[index];
             var timeout = item.timeout;
-            if((typeof timeout) == undefined || !isNumber(timeout)) {
+            if((typeof timeout) == undefined || isNaN(Number(timeout))) {
                 timeout = element.settings.timeout;
             }
             //这里为了循环取值，需要对索引值求余, 不然会数组越界
