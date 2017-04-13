@@ -1,4 +1,4 @@
-###自定义实现图片轮播效果
+##自定义实现图片轮播效果
     使用方式调用方式： 
     1.引入jquery.js
     <script type="text/javascript" src="script/lib/jquery-1.8.0.min.js"></script>
